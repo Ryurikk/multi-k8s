@@ -1,6 +1,6 @@
-sudo: required.
+sudo: required
 services:
-    - docker
+  - docker
 
 before_install:
   - docker build -t ryurikk/react-test -f ./client/Dockerfile.dev ./client
@@ -20,3 +20,15 @@ after_success:
   - docker push ryurikk/multi-nginx
   - docker push ryurikk/multi-server
   - docker push ryurikk/multi-worker
+
+  deploy:
+    provider: elasticbeanstalk
+    region: 'us-east-2'
+    app: 'multi-docker'
+    env: 'Multidocker-env'
+    bucket_name: 'elasticbeanstalk-us-east-2-116361194595'
+    bucket_path: 'docker-multi'
+    on:
+      branch: master
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY

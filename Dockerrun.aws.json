@@ -1,0 +1,39 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "name" : "client",
+            "image" : "ryurikk/multi-client",
+            "hostname" : "client",
+            "essential": false
+        },
+        {
+            "name" : "server",
+            "image" : "ryurikk/multi-server",
+            "hostname" : "api",
+            "essential": false
+        },
+        {
+            "name" : "worker",
+            "image" : "ryurikk/multi-worker",
+            "hostname" : "worker",
+            "essential": false
+        },
+        {
+            "name" : "nginx",
+            "image" : "ryurikk/multi-nginx",
+            "hostname" : "nginx",
+            "essential": true,
+            "portMappings" : [
+                {
+                    "hostPort": 80,
+                    "containerPort": 80
+                }
+            ],
+            "links": [
+                "client",
+                "server"
+            ]
+        }
+    ]
+}
